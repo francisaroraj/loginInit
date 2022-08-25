@@ -17,17 +17,18 @@ export function AppStack () {
   const [user, setUser] = useState(null)
   useEffect(() => {
     async function getUser(){
-      AsyncStorageHelper.retrieveData(StoreKey.user, async (_user) => {
+      AsyncStorageHelper.retrieveData(StoreKey.loggedIn, async (_user) => {
         if (_user) {
           setUser(_user)
-          console.log(_user)
         }
       });
     }
     getUser()
   },[])
 
-  return (user ? <HomeScreen/>  : <AuthScreen/>)
+  return (
+    user ? user !== '' ? <HomeScreen/>  : <AuthScreen/> : <AuthScreen/>
+   )
 }
 
 export const HomeScreen = () => {
@@ -43,6 +44,15 @@ export const HomeScreen = () => {
           name={AppScreens.homeScreen.name as any}
           component={AppScreens.homeScreen.component}
         />
+        <AuthStack.Screen
+          name={AppScreens.loginScreen.name as any}
+          component={AppScreens.loginScreen.component}
+        />
+        <AuthStack.Screen
+          name={AppScreens.signUpScreen.name as any}
+          component={AppScreens.signUpScreen.component}
+        />
+        
       </RootStack.Navigator>
     )
   }
@@ -64,6 +74,10 @@ export const HomeScreen = () => {
         <AuthStack.Screen
           name={AppScreens.signUpScreen.name as any}
           component={AppScreens.signUpScreen.component}
+        />
+        <AuthStack.Screen
+          name={AppScreens.homeScreen.name as any}
+          component={AppScreens.homeScreen.component}
         />
       </AuthStack.Navigator>
     )
